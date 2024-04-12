@@ -9,7 +9,7 @@ function App() {
     <Router>
         <Routes>
           <Route path="/" element={<UsersPage />} />
-          <Route path="/contacts" element={<ContactsPage/>}/>
+          <Route path="/contacts/:userId" element={<ContactsPage/>}/>
           <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
       </Router>
