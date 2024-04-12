@@ -11,26 +11,6 @@ function ContactsPage() {
   let { userId } = useParams();
   const [UserData, setUserData] = useState(null);
   const [ContactData, setContactData] = useState(null);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-
- 
-  const handleOpenPopup = () => {
-    setIsPopupOpen(true);
-  };
-
-  const handleCancel = () => {
-    setIsPopupOpen(false);
-    // Implementa la lógica para cancelar la acción
-    console.log('Action cancelled');
-  };
-
-  const handleAccept = () => {
-    setIsPopupOpen(false);
-    // Implementa la lógica para aceptar la acción
-    console.log('Action accepted');
-  };
-
-
   
   useEffect(() => {
     axios
@@ -69,8 +49,7 @@ function ContactsPage() {
             />
           </div>
           <div className="flex gap-3 my-2">
-              {/* <button onClick={()=> handleDeleteUser()} > */}
-            <button onClick={handleOpenPopup}>
+            <button>
               <MdModeEdit className="text-blue-600" />
             </button>
             <button>
@@ -83,7 +62,7 @@ function ContactsPage() {
           <p>{UserData && UserData.name}</p>
         </div>
         <div className="flex flex-col h-full p-2 bg-white w-full rounded-xl overflow-x-auto">
-          <Popup isOpen={isPopupOpen} onCancel={handleCancel} onAccept={handleAccept} />
+            {/* <Popup isOpen={isPopupOpen} onCancel={handleCancel} onAccept={handleAccept} /> */}
           <ContactTable ContactData={ContactData} userId={userId} />
         </div>
       </div>

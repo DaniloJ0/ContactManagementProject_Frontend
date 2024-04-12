@@ -8,23 +8,47 @@ import Swal from "sweetalert2";
 import { redirect } from "react-router-dom";
 
 function ContactTable({ ContactData, userId }) {
-  const [isEditarPopupAbierto, setEditarPopupAbierto] = useState(false);
   const [isCrearPopupAbierto, setCrearPopupAbierto] = useState(false);
-  const [contactoAEditar, setContactoAEditar] = useState(null);
+  const [isEditPopupOpen, setEditPopupOpen] = useState(false);
+  const [editingContact, setEditingContact] = useState(null);
 
-  const abrirEditarPopup = (contacto) => {
-    setContactoAEditar(contacto);
-    setEditarPopupAbierto(true);
+  const openEditPopup = (contact) => {
+    setEditingContact(contact);
+    setEditPopupOpen(true);
   };
 
-  const cerrarEditarPopup = () => {
-    setEditarPopupAbierto(false);
+  const handleEdit = (contact) => {
+    openEditPopup(contact);
   };
 
-  const guardarContactoEditado = (contactoEditado) => {
-    // Lógica para guardar el contacto editado
-    console.log("Contacto editado:", contactoEditado);
-    cerrarEditarPopup();
+  const closeEditPopup = () => {
+    setEditingContact(null);
+    setEditPopupOpen(false);
+  };
+
+  const saveEditedContact = (editedContact) => {
+    console.log("Contacto editado:", editedContact);
+
+    axios.put(`${process.env.REACT_APP_API_BASE_URL}/Contact`, editedContact).then((response) => {
+      return Swal.fire({
+        title: "Contacto actualizado!",
+        text: "Has actualizado un contacto!",
+        icon: "success",
+        confirmButtonText: "Cool",
+      }).then(() => {
+        redirect(`/contacts/${userId}`);
+      });
+    }
+    ).catch((error) => {
+      console.log(error);
+      // Swal.fire({
+      //   title: "Algo ha salido mal!",
+      //   text: "Por favor vuelva intentarlo!",
+      //   icon: "error",
+      //   confirmButtonText: "Cool",
+      //   });
+    });
+    closeEditPopup();
   };
 
   const abrirCrearPopup = () => {
@@ -65,9 +89,6 @@ function ContactTable({ ContactData, userId }) {
     cerrarCrearPopup();
   };
 
-  const handleEdit = (user) => {
-    console.log("Edit user:", user);
-  };
 
   const handleDelete = (contact) => {
     axios.delete(`${process.env.REACT_APP_API_BASE_URL}/Contact`, {
@@ -82,7 +103,12 @@ function ContactTable({ ContactData, userId }) {
           redirect(`/contacts/${userId}`);
         });
     }).catch((error) => {
-      console.log(error);
+      Swal.fire({
+        title: "Algo ha salido mal!",
+        text: "Por favor vuelva intentarlo!",
+        icon: "error",
+        confirmButtonText: "Cool",
+        });
     });
     console.log("Delete user:", contact);
   };
@@ -105,8 +131,12 @@ function ContactTable({ ContactData, userId }) {
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
-      {/* <EditPopup abrirEditarPopup={abrirEditarPopup} isOpen={isEditarPopupAbierto} contacto={contactoAEditar} onSave={guardarContactoEditado} onCancel={cerrarEditarPopup} /> */}
-      {/* Popup de creación */}
+      <EditPopup
+        isOpen={isEditPopupOpen}
+        contact={editingContact}
+        onSave={saveEditedContact}
+        onCancel={closeEditPopup}
+      />
       <CrearPopup
         isOpen={isCrearPopupAbierto}
         onCreate={crearNuevoContacto}
