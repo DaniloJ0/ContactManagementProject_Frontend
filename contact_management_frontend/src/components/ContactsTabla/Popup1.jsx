@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Popup({ onClose, onSave, formData, initialFormData }) {
+function Popup1({ onClose, onSave, formData, initialFormData }) {
   const [data, setData] = useState(formData);
 
   const handleChange = e => {
@@ -34,4 +34,4 @@ function Popup({ onClose, onSave, formData, initialFormData }) {
   );
 }
 
-export default Popup;
+export default Popup1;

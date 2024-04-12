@@ -14,7 +14,7 @@ function TableRow({ item, onEdit, onDelete }) {
       <td className="border border-gray-200 px-4 py-2">{note}</td>
       <td className="border border-gray-200 px-4 py-2">
         <button className='mr-1 mb-2 xl:mb-0 xl:text-xl xl:mr-4' onClick={() => onEdit(item)}> <MdModeEdit className="text-blue-600" /></button>
-        <button className='xl:text-xl' onClick={() => onDelete(item)}><MdDelete className="text-red-600" /></button>
+        <button className='xl:text-xl' onClick={() => onDelete(item.id.value)}><MdDelete className="text-red-600" /></button>
       </td>
     </tr>
   );
